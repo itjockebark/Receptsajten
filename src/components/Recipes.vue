@@ -1,6 +1,6 @@
 <template>
     <div class="recipes">
-        <Recipe @star-click="starClick" v-for="recipe in recipes" :key="recipe.title" :recipe="recipe" />
+        <Recipe @star-click="starClick" v-for="recipe in recipes" :key="recipe.id" :recipe="recipe" />
     </div>
 </template>
 
