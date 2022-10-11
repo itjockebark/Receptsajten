@@ -62,4 +62,7 @@ export default {
 .categories-list li:hover {
     text-decoration: underline;
 }
+.router-link-active {
+    font-weight: bold;
+}
 </style>
