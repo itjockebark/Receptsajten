@@ -30,7 +30,7 @@ export default {
       console.log(this.$route.params.name)
       const response = await fetch(`${baseUrl}/categories/${this.$route.params.name}/recipes`)
       const data = await response.json();
-      this.recipes = data;
+      this.recipes = data.sort((a, b) => a.title.localeCompare(b.title));
 
     },
   }

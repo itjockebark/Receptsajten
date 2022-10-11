@@ -2,6 +2,7 @@
     <div class="container">
         <p class="categories">Kategorier</p>
         <ul class="categories-list">
+            <li><router-link to="/">Alla recept</router-link></li>
             <li v-for="category in categories" :key="category.id"><router-link :to="{ name: 'Category', params: { name: category.name}}">{{category.name}} ({{category.count}})</router-link></li>
         </ul>
     </div>
@@ -27,7 +28,6 @@ export default {
             return data;
         }
     }
-
 }
 </script>
 
