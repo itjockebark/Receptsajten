@@ -2,6 +2,7 @@
     <div class="search">
         <i class="fa-solid fa-magnifying-glass"></i>
         <input class="search-bar" type="text" placeholder="Sök bland recepten">
+        <p>Hej</p> 
     </div>
 </template>
 
