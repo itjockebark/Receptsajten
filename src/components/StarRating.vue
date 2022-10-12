@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import { computed } from '@vue/reactivity';
+    const baseUrl = 'https://jau21-grupp3-z5h3yg8ogjvb.sprinto.se';
 
     export default {
         name: 'StarRating',
@@ -22,27 +22,15 @@
             recipe: Object
         },
         methods: {
-            starClick(id, number) {
+            async starClick(id, number) {
                 this.$emit('star-click', id, number);
             },
             starHover(number) {
                 this.starOnHover = number;
-                
-            },
-            // returns the mean value of the ratings
-            calculateRecipeRating(ratings) {
-                return ratings.reduce((a, b) => a + b, 0) / ratings.length;
             },
             // checks if star should be filled
             showStar(number) {
-                //let rating = this.calculateRecipeRating(this.recipe.ratings);
                 return (this.recipe.avgRating >= number && this.starOnHover >= number) || this.starOnHover >= number;
-            }
-        },
-        computed: {
-            onRatingChange() {
-                this.starOnHover = this.recipe.avgRating;
-                console.log(avgRating);
             }
         }
     }

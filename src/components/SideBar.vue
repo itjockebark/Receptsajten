@@ -2,8 +2,8 @@
     <div class="container">
         <p class="categories">Kategorier</p>
         <ul class="categories-list">
-            <li><router-link to="/" :class="{'selected-category': $route.path === '/'}">Alla recept ({{numOfRecipes}})</router-link></li>
-            <li v-for="category in categories" :key="category.name" :title="category.name"><router-link :to="{ name: 'Category', params: { name: category.name } }" :class="{ 'selected-category': $route.params.name === category.name }">{{ category.name }} ({{ category.count }})</router-link></li>
+            <li><router-link to="/">Alla recept ({{numOfRecipes}})</router-link></li>
+            <li v-for="category in categories" :key="category.name" :title="category.name"><router-link :to="{ name: 'Category', params: { name: category.name } }" >{{ category.name }} ({{ category.count }})</router-link></li>
         </ul>
     </div>
 </template>
@@ -20,7 +20,6 @@
             }
         },
         async created() {
-            console.log(this.$route.path);
             this.categories = await this.fetchCategories();
             this.numOfRecipes = await this.getRecipeCount();
         },
@@ -78,8 +77,8 @@
     .categories-list li a:visited {
         color: #000
     }
-
-    .selected-category {
+    
+    .router-link-active {
         font-weight: bold;
     }
 </style>

@@ -1,13 +1,34 @@
 <template>
     <div class="search">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input class="search-bar" type="text" placeholder="Sök bland recepten">
+        <input class="search-bar" type="text" placeholder="Sök bland recepten" v-model="input" @click="$router.push('/');" @input="filterRecipes">
     </div>
 </template>
 
 <script>
+    const baseUrl = 'https://jau21-grupp3-z5h3yg8ogjvb.sprinto.se';
     export default {
-        name: 'SearchBar'
+        name: 'SearchBar',
+        data() {
+            return {
+                input: ''
+            }
+        },
+        methods: {
+            async filterRecipes() {
+                const response = await fetch(`${baseUrl}/recipes?query=${this.input}`);
+                const data = await response.json();
+                this.$emit('searched-recipes', data);
+                return data;
+            }
+        },
+        watch: { 
+            '$route.path': function() {
+                if (this.$route.path != '/') {
+                    this.input = '';
+                }
+            }
+        }
     }
 </script>
 

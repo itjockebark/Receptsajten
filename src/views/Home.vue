@@ -1,30 +1,40 @@
 <template>
+  <LoadingRecipes v-if="loading"/>
   <Recipes @star-click="starClick" :recipes="recipes" />
 </template>
 
 <script>
   import Recipes from '../components/Recipes.vue';
+  import LoadingRecipes from '../components/LoadingRecipes.vue';
 
   const baseUrl = 'https://jau21-grupp3-z5h3yg8ogjvb.sprinto.se';
 
   export default {
     name: 'Home',
-    components: {
-      Recipes
-    },
     data() {
       return {
+        loading: false,
         recipes: []
       }
     },
+    props: [
+      'searchRecipes'
+    ],
+    watch: {
+      searchRecipes: function(searchResult) {
+        this.recipes = searchResult.sort((a, b) => a.title.localeCompare(b.title));
+      }
+    },
     async created() {
+      this.loading = true;
       this.recipes = await this.fetchRecipes();
     },
     components: {
+      LoadingRecipes,
       Recipes
     },
     methods: {
-      async starClick (id, number) {
+      async starClick(id, number) {
         const requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -36,11 +46,13 @@
           .then(data => data);
 
         this.recipes = await this.fetchRecipes();
+        
       },
       async fetchRecipes() {
         const response = await fetch(`${baseUrl}/recipes`);
         const data = await response.json();
-        return data;
+        this.loading = false;
+        return data.sort((a, b) => a.title.localeCompare(b.title));
       }
     }
   }
