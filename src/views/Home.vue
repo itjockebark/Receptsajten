@@ -22,7 +22,7 @@
     ],
     watch: {
       searchRecipes: function(searchResult) {
-        this.recipes = searchResult.sort((a, b) => a.title.localeCompare(b.title));
+        this.recipes = searchResult.sort((a, b) => b.avgRating - a.avgRating);
       }
     },
     async created() {
@@ -45,15 +45,14 @@
           .then(response => response)
           .then(data => data);
 
-        this.recipes = await this.fetchRecipes();
-        
+          this.recipes = await this.fetchRecipes();
       },
       async fetchRecipes() {
         const response = await fetch(`${baseUrl}/recipes`);
         const data = await response.json();
         this.loading = false;
-        return data.sort((a, b) => a.title.localeCompare(b.title));
-      }
+        return data.sort((a, b) => b.avgRating - a.avgRating);
+      },
     }
   }
 </script>

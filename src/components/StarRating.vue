@@ -1,5 +1,5 @@
 <template>
-    <div @mouseleave="this.starOnHover = recipe.avgRating">
+    <div @mouseleave="starOnHover = recipe.avgRating">
         <i @mouseover="starHover(1)" @click="starClick(recipe._id, 1)" :class="[showStar(1) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
         <i @mouseover="starHover(2)" @click="starClick(recipe._id, 2)" :class="[showStar(1.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
         <i @mouseover="starHover(3)" @click="starClick(recipe._id, 3)" :class="[showStar(2.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
@@ -9,13 +9,11 @@
 </template>
 
 <script>
-    const baseUrl = 'https://jau21-grupp3-z5h3yg8ogjvb.sprinto.se';
-
     export default {
         name: 'StarRating',
         data() {
             return {
-                starOnHover: this.recipe.avgRating,
+                starOnHover: this.recipe.avgRating
             }
         },
         props: {
@@ -32,6 +30,9 @@
             showStar(number) {
                 return (this.recipe.avgRating >= number && this.starOnHover >= number) || this.starOnHover >= number;
             }
+        },
+        updated() {
+            this.starOnHover = this.recipe.avgRating;
         }
     }
 </script>

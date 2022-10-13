@@ -68,6 +68,7 @@
 
     .categories-list li a {
         text-decoration: none;
+        color: #000;
     }
 
     .categories-list li a:hover {

@@ -38,7 +38,7 @@
         const response = await fetch(`${baseUrl}/categories/${this.$route.params.name}/recipes`);
         const data = await response.json();
         this.loading = false;
-        this.recipes = data.sort((a, b) => a.title.localeCompare(b.title));
+        this.recipes = data.sort((a, b) => b.avgRating - a.avgRating);
       }
     }
   }
