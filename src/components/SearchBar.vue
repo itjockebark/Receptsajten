@@ -3,6 +3,7 @@
         <i class="fa-solid fa-magnifying-glass"></i>
         <input class="search-bar" type="text" placeholder="Sök bland recepten..." v-model="input" @click="$router.push('/');" @input="filterRecipes">
     </div>
+    <p> {{ input }}</p>
 </template>
 
 <script>
@@ -33,6 +34,7 @@
             'searched-recipes'
         ]
     }
+}
 </script>
 
 <style scoped>

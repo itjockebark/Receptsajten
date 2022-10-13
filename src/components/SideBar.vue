@@ -70,7 +70,7 @@
         text-decoration: none;
         color: #000;
     }
-
+    
     .categories-list li a:hover {
         text-decoration: underline;
     }

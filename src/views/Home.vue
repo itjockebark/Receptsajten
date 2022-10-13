@@ -41,18 +41,17 @@
           body: JSON.stringify({ rating: number })
         };
 
-        fetch(`${baseUrl}/recipes/${id}/ratings`, requestOptions)
-          .then(response => response)
-          .then(data => data);
-
-          this.recipes = await this.fetchRecipes();
+      fetch(`${baseUrl}/recipes/${id}/ratings`, requestOptions)
+        .then(response => response)
+        .then(data => data);
+        this.recipes = await this.fetchRecipes();
       },
       async fetchRecipes() {
         const response = await fetch(`${baseUrl}/recipes`);
         const data = await response.json();
         this.loading = false;
         return data.sort((a, b) => b.avgRating - a.avgRating);
-      },
+      }
     }
   }
 </script>
