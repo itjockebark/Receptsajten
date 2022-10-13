@@ -5,8 +5,8 @@
       <div class="sidebar-and-searchbar">
         <SideBar />
         <div>
-          <SearchBar />
-          <RouterView></RouterView>
+          <SearchBar @searched-recipes="searchedRecipes" />
+          <RouterView :searchRecipes="searchResult" />
         </div>
       </div>
     </div>
@@ -24,6 +24,16 @@
       Header,
       SearchBar,
       SideBar
+    },
+    data() {
+      return {
+        searchResult: []
+      }
+    },
+    methods: {
+      searchedRecipes(data) {
+        this.searchResult = data;
+      }
     }
   }
 </script>

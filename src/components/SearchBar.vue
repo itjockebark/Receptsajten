@@ -1,45 +1,38 @@
 <template>
     <div class="search">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input class="search-bar" type="text" v-model="input" placeholder="Sök bland recepten...">
-
+        <input class="search-bar" type="text" placeholder="Sök bland recepten..." v-model="input" @click="$router.push('/');" @input="filterRecipes">
     </div>
-    <p> {{ input }}</p>
 </template>
 
 <script>
-export default {
-    name: 'SearchBar',
-    data() {
-        return {
-            input: "",
-            recipes: []
-        }
-    },
-    computed: {
-        filteredList() {
-            return this.recipes.filter((recipe) =>
-                recipe.toLowerCase().includes(input.value.toLowerCase())
-            );
+    const baseUrl = 'https://jau21-grupp3-z5h3yg8ogjvb.sprinto.se';
+    export default {
+        name: 'SearchBar',
+        data() {
+            return {
+                input: ''
+            }
         },
-        handleSearch() {
-            this.$emit()
-        }
-
-    },
-    method: {
-        async fetchRecipes() {
-            const response = await fetch(`${baseUrl}/recipes`);
-            const data = await response.json();
-
-            return data.sort((a, b) => a.title.localeCompare(b.title));
-        }
-
-    },
-    async created() {
-        this.recipes = await this.fetchRecipes()
+        methods: {
+            async filterRecipes() {
+                const response = await fetch(`${baseUrl}/recipes?query=${this.input}`);
+                const data = await response.json();
+                this.$emit('searched-recipes', data);
+                return data;
+            }
+        },
+        watch: { 
+            '$route.path': function() {
+                if (this.$route.path != '/') {
+                    this.input = '';
+                }
+            }
+        },
+        emits: [
+            'searched-recipes'
+        ]
     }
-}
 </script>
 
 <style scoped>

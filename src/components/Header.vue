@@ -1,6 +1,7 @@
 <template>
     <header>
         <h1>{{ title }}</h1>
+        <p>ahdjsk shdjakd shjkhsjs sjsjs sjsjajkhd akhdak</p>
     </header>
 </template>
 
@@ -16,5 +17,9 @@
 <style scoped>
     header {
         text-align: center;
+    }
+    
+    p {
+        margin-bottom: 50px;
     }
 </style>
