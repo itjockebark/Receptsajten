@@ -34,7 +34,6 @@
             'searched-recipes'
         ]
     }
-}
 </script>
 
 <style scoped>
