@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header title="Receptsajten" />
+    <Header title="Receptsajten"></Header>
     <div class="container">
       <div class="sidebar-and-searchbar">
         <SideBar />
@@ -8,7 +8,7 @@
           <SearchBar @searched-recipes="searchedRecipes" />
           <RouterView :searchRecipes="searchResult" />
         </div>
-      </div>
+      </div>  
     </div>
   </div>
 </template>
@@ -42,6 +42,10 @@
   body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .hidden {
+    display: none;
   }
   
   .container {

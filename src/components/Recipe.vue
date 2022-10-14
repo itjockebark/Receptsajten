@@ -1,5 +1,5 @@
 <template>
-    <div class="recipe">
+    <div class="recipe" @click="recipeClick(recipe._id)">
         <div class="image-and-text">
             <img class="recipe-img" :src="recipe.imageUrl" :alt="recipe.title">
             <div class="title-and-description">
@@ -27,6 +27,11 @@
         methods: {
             starClick(id, number) {
                 this.$emit('star-click', id, number)
+            },
+            recipeClick(id) {
+                this.$router.push(`/recipe/${id}`)
+                    
+                
             }
         }
     }
@@ -87,4 +92,6 @@
         color: #555;
         margin-bottom: 0;
     }
+
+
 </style>
