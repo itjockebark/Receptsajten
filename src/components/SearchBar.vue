@@ -24,7 +24,7 @@
         },
         watch: { 
             '$route.path': function() {
-                if (this.$route.path != '/') {
+                if (this.$route.path !== '/') {
                     this.input = '';
                 }
             }

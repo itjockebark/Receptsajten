@@ -26,12 +26,10 @@
         },
         methods: {
             starClick(id, number) {
-                this.$emit('star-click', id, number)
+                this.$emit('star-click', id, number);
             },
             recipeClick(id) {
-                this.$router.push(`/recipe/${id}`)
-                    
-                
+                this.$router.push(`/recipe/${id}`);
             }
         }
     }

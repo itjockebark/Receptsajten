@@ -1,61 +1,67 @@
 <template>
   <div>
-    <Header title="Receptsajten"></Header>
+    <Header title="Receptsajten" v-show="onNotRecipeRoute"></Header>
     <div class="container">
       <div class="sidebar-and-searchbar">
-        <SideBar />
+        <SideBar v-show="onNotRecipeRoute" />
         <div>
-          <SearchBar @searched-recipes="searchedRecipes" />
+          <SearchBar @searched-recipes="searchedRecipes" v-show="onNotRecipeRoute" />
           <RouterView :searchRecipes="searchResult" />
         </div>
-      </div>  
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import Header from './components/Header.vue';
-  import SearchBar from './components/SearchBar.vue';
-  import SideBar from './components/SideBar.vue';
-  
-  export default {
-    name: 'App',
-    components: {
-      Header,
-      SearchBar,
-      SideBar
-    },
-    data() {
-      return {
-        searchResult: []
-      }
-    },
-    methods: {
-      searchedRecipes(data) {
-        this.searchResult = data;
-      }
+import Header from './components/Header.vue';
+import SearchBar from './components/SearchBar.vue';
+import SideBar from './components/SideBar.vue';
+
+export default {
+  name: 'App',
+  components: {
+    Header,
+    SearchBar,
+    SideBar
+  },
+  data() {
+    return {
+      searchResult: [],
+      onNotRecipeRoute: true
+    }
+  },
+  methods: {
+    searchedRecipes(data) {
+      this.searchResult = data;
+    }
+  },
+  watch: {
+    '$route.path': function () {
+      this.$route.name === 'Recipe' ? this.onNotRecipeRoute = false : this.onNotRecipeRoute = true;
     }
   }
+}
 </script>
 
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-  }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-  .hidden {
-    display: none;
-  }
-  
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto;
-  }
+.hidden {
+  display: none;
+}
 
-  .sidebar-and-searchbar {
-    display: flex;
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+
+.sidebar-and-searchbar {
+  display: flex;
+}
 </style>
