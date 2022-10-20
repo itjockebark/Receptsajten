@@ -1,6 +1,6 @@
 <template>
-  <LoadingRecipes v-if="loading"/>
-  <Recipes @star-click="starClick" :recipes="recipes" />
+  <LoadingRecipes v-if="loading" />
+  <Recipes v-if="!loading" @star-click="starClick" :recipes="recipes" />
 </template>
 
 <script>

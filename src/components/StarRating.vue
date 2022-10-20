@@ -31,7 +31,6 @@ export default {
     ],
     methods: {
         async starClick(id, number) {
-
             this.$emit('star-click', id, number);
         },
         starHover(number) {
@@ -42,7 +41,6 @@ export default {
             return (this.recipe.avgRating >= number && this.starOnHover >= number) || this.starOnHover >= number;
         }
     },
-
 }
 </script>
 

@@ -1,61 +1,94 @@
 <template>
-  <div class="container">
+  <LoadingRecipeView v-if="loading" />
+  <div class="container" v-if="!loading">
     <h1 class="header">{{recipe.title}}</h1>
-    <div class="description-and-img">
-      <div class="description">
-        <p>{{recipe.description}}</p>
-        <div class="recipe-info">
-          <div class="recipe-info-text">
-            <div class="stars">
-              <i :class="[showStar(1) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
-              <i :class="[showStar(1.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
-              <i :class="[showStar(2.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
-              <i :class="[showStar(3.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
-              <i :class="[showStar(4.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
+    <div class="container-2">
+      <div class="description-and-img">
+        <div class="description">
+          <p>{{recipe.description}}</p>
+          <div class="recipe-info">
+            <div class="recipe-info-text">
+              <div class="stars">
+                <i :class="[showStar(1) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
+                <i :class="[showStar(1.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
+                <i :class="[showStar(2.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
+                <i :class="[showStar(3.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
+                <i :class="[showStar(4.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
+              </div>
+              <p class="ingredients-text">| &nbsp; {{recipe.ingredients.length}}
+                INGREDIENSER</p>
+              <p class="recipe-minutes-text">| &nbsp; {{recipe.timeInMins}} MINUTER</p>
             </div>
-            <p class="ingredients-text">{{recipe.ingredients.length}}
-              INGREDIENSER</p>
-            <p class="recipe-minutes-text">{{recipe.timeInMins}} MINUTER</p>
           </div>
         </div>
+        <img class="recipe-img" :src="recipe.imageUrl" :alt="recipe.title">
       </div>
-      <img class="recipe-img" :src="recipe.imageUrl" :alt="recipe.title">
-    </div>
-    <div class="ingredients-and-instructions">
-      <div class="ingredients">
-        <h2>Ingredienser</h2>
-        <div class="ingredients-list">
-          <ul>
-            <li v-for="ingredient in recipe.ingredients">{{ingredient.amount}} {{ingredient.unit}} {{ingredient.name}}
-            </li>
-          </ul>
+      <div class="ingredients-and-instructions">
+        <div class="ingredients">
+          <h2>Ingredienser</h2>
+          <div class="ingredients-list">
+            <ul>
+              <li v-for="ingredient in recipe.ingredients">{{ingredient.amount}} {{ingredient.unit}} {{ingredient.name}}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="instructions">
+          <h2>Gör så här</h2>
+          <div class="instructions-list" v-for="instruction in recipe.instructions">{{instruction}}</div>
         </div>
       </div>
-      <div class="instructions">
-        <h2>Gör så här</h2>
-        <div class="instructions-list" v-for="instruction in recipe.instructions">{{instruction}}</div>
+      <div class="rating">
+        <h2>Vad tyckte du om receptet?</h2>
+        <p class="rating-info-text">Klicka på en stjärna för att ge ditt betyg!</p>
+        <StarRating @star-click="starClick" :recipe="recipe" />
       </div>
     </div>
-    <div class="rating">
-      <h2>Vad tyckte du om receptet?</h2>
-      <p>Klicka på en stjärna för att ge ditt betyg!</p>
-      <StarRating @star-click="starClick" :recipe="recipe" />
+    <div class="comment-container">
+      <h2>Kommentarer</h2>
+      <p>Tecken kvar: {{commentWarning}}</p>
+      <form @submit.prevent="onSubmit()">
+        <div class="comment-field">
+          <textarea class="comment-field-textarea" type="text" placeholder="Skriv din kommentar" required v-model="comment"
+            @input="charsLeft()" maxlength="200"></textarea>
+        </div>
+        <div class="name-input-and-button">
+          <div class="name-input">
+            <input class="name-input-field" type="text" placeholder="Ditt namn" maxlength="32" required v-model="name">
+          </div>
+          <button class="name-input-button" type="submit">Skicka</button>
+        </div>
+      </form>
+      <div class="comment" v-for="cmt in comments">
+        <div class="name-and-date">
+          <p class="name">{{cmt.name}}</p>
+          <p class="date">datum</p>
+        </div>
+        <p class="comment-text">{{cmt.comment}}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import LoadingRecipeView from '../components/LoadingRecipeView.vue';
 import StarRating from '../components/StarRating.vue';
 const baseUrl = 'https://jau21-grupp3-z5h3yg8ogjvb.sprinto.se';
 
 export default {
   name: 'RecipeView',
   components: {
+    LoadingRecipeView,
     StarRating
   },
   data() {
     return {
-      recipe: {},
+      recipe: Object,
+      loading: true,
+      comment: '',
+      commentWarning: '200',
+      name: '',
+      comments: []
     }
   },
   props: [
@@ -69,6 +102,13 @@ export default {
       const response = await fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}`);
       const data = await response.json();
       this.recipe = data;
+      await this.fetchComments();
+      this.loading = false;
+    },
+    async fetchComments() {
+      const response = await fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}/comments`);
+      const data = await response.json();
+      this.comments = data;
     },
     showStar(number) {
       return this.recipe.avgRating >= number;
@@ -83,14 +123,44 @@ export default {
       fetch(`${baseUrl}/recipes/${id}/ratings`, requestOptions)
         .then(response => response)
         .then(data => data);
+    },
+    charsLeft() {
+      this.commentWarning = 200 - this.comment.length;
+    },
+    onSubmit() {
+      console.log(this.comment, this.name);
+
+      const toSend = {
+        comment: this.comment,
+        name: this.name
+      };
+
+      console.log(JSON.stringify(toSend));
+
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(toSend)
+      };
+
+      console.log(requestOptions);
+
+      fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}/comments`, requestOptions)
+        .then(response => response)
+        .then(data => data);
     }
-  }
+  },
 }
 </script>
 
 <style scoped>
 .container {
   width: 1000px;
+}
+
+.container-2 {
+  padding-bottom: 30px;
+  border-bottom: 1px solid #aaa;
 }
 
 p {
@@ -104,11 +174,12 @@ p {
 .description {
   width: 400px;
   text-align: center;
-  margin: 0 30px 0 0;
+  margin-right: 50px;
   font-size: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #333;
 }
 
 .recipe-info {
@@ -119,6 +190,8 @@ p {
   font-size: 15px;
   justify-content: center;
   margin-top: 20px;
+  color: #555;
+  border-radius: 5px;
 }
 
 .fa-star {
@@ -147,9 +220,8 @@ p {
   border: 2px solid #ddd;
   border-style: outset;
   padding: 6px;
-  width: 200px;
-  height: 200px;
-  margin-right: 25px;
+  width: 250px;
+  height: 250px;
   object-fit: cover;
   aspect-ratio: 1;
 }
@@ -173,6 +245,7 @@ p {
 .ingredients-list {
   background-color: #f4f4f4;
   font-size: 15px;
+  border-radius: 5px;
 }
 
 .ingredients-list ul {
@@ -191,9 +264,100 @@ p {
   margin: 5px 0;
   padding: 10px;
   width: 475px;
+  border-radius: 5px;
 }
 
 .rating {
   text-align: center;
+}
+
+.rating-info-text {
+  color: #333;
+}
+
+.comment-container {
+  width: 716px;
+}
+
+.comment-field {
+  width: 100%;
+  display: flex;
+  border: 5px solid #f4f4f4;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.comment-field-textarea {
+  width: 716px;
+  height: 100px;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+  font-size: 25px;
+  resize: none;
+  border: none;
+  outline: none;
+}
+
+.name-input {
+  width: 100%;
+  display: flex;
+  border: 5px solid #f4f4f4;
+  border-radius: 5px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.name-input-field {
+  width: 100%;
+  border: none;
+  outline: none;
+  height: 20px;
+  font-size: 18px;
+}
+
+.name-input-and-button {
+  display: flex;
+  align-items: center;
+}
+
+.name-input-button {
+  width: 200px;
+  height: 40px;
+  font-size: 20px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  margin-left: 10px;
+  color: #555;
+  cursor: pointer;
+}
+
+.name-input-button:hover {
+  background: #e9e9e9;
+}
+
+.comment {
+  background: #f4f4f4;
+  margin: 20px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.name-and-date {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name {
+  font-size: 25px;
+}
+
+.date {
+}
+
+.comment-text {
+  margin-top: 10px;
 }
 </style>

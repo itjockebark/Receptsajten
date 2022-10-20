@@ -5,7 +5,7 @@
       <div class="sidebar-and-searchbar">
         <SideBar v-show="onNotRecipeRoute" />
         <div>
-          <SearchBar @searched-recipes="searchedRecipes" v-show="onNotRecipeRoute" />
+          <SearchBar v-show="onNotRecipeRoute" @searched-recipes="searchedRecipes" />
           <RouterView :searchRecipes="searchResult" />
         </div>
       </div>
