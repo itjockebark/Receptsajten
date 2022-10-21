@@ -46,19 +46,20 @@
     </div>
     <div class="comment-container">
       <h2>Kommentarer</h2>
-      <p>Tecken kvar: {{commentWarning}}</p>
-      <form @submit.prevent="onSubmit()">
+      <p v-if="!commented">Tecken kvar: {{commentWarning}}</p>
+      <form @submit.prevent="onSubmit" v-if="!commented">
         <div class="comment-field">
           <textarea class="comment-field-textarea" type="text" placeholder="Skriv din kommentar" required v-model="comment"
-            @input="charsLeft()" maxlength="200"></textarea>
+            @input="charsLeft" maxlength="200" :disabled="commented"></textarea>
         </div>
         <div class="name-input-and-button">
           <div class="name-input">
-            <input class="name-input-field" type="text" placeholder="Ditt namn" maxlength="32" required v-model="name">
+            <input class="name-input-field" type="text" placeholder="Ditt namn" maxlength="32" required v-model="name" :disabled="commented">
           </div>
-          <button class="name-input-button" type="submit">Skicka</button>
+          <button class="name-input-button" type="submit" :disabled="commented">Skicka</button>
         </div>
       </form>
+      <p class="thank-you-text" v-if="commented">Tack för din kommentar!</p>
       <div class="comment" v-for="cmt in comments">
         <div class="name-and-date">
           <p class="name">{{cmt.name}}</p>
@@ -73,6 +74,7 @@
 <script>
 import LoadingRecipeView from '../components/LoadingRecipeView.vue';
 import StarRating from '../components/StarRating.vue';
+
 const baseUrl = 'https://jau21-grupp3-z5h3yg8ogjvb.sprinto.se';
 
 export default {
@@ -88,7 +90,9 @@ export default {
       comment: '',
       commentWarning: '200',
       name: '',
-      comments: []
+      comments: [],
+      commented: false,
+      updateCounter: 0
     }
   },
   props: [
@@ -127,15 +131,11 @@ export default {
     charsLeft() {
       this.commentWarning = 200 - this.comment.length;
     },
-    onSubmit() {
-      console.log(this.comment, this.name);
-
+    async onSubmit() {
       const toSend = {
         comment: this.comment,
         name: this.name
       };
-
-      console.log(JSON.stringify(toSend));
 
       const requestOptions = {
         method: 'POST',
@@ -143,19 +143,32 @@ export default {
         body: JSON.stringify(toSend)
       };
 
-      console.log(requestOptions);
-
       fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}/comments`, requestOptions)
         .then(response => response)
         .then(data => data);
+
+      this.commented = true;
+      this.comment = '';
+      this.name = '';
+      this.commentWarning = '200';
     }
   },
+  async updated() {
+    if (this.commented && this.updateCounter < 20) {
+      await this.fetchComments();
+      this.updateCounter++;
+    }
+  }
 }
 </script>
 
 <style scoped>
+p {
+  margin: 0;
+}
 .container {
   width: 1000px;
+  margin-bottom: 100px;
 }
 
 .container-2 {
@@ -163,12 +176,8 @@ export default {
   border-bottom: 1px solid #aaa;
 }
 
-p {
-  margin: 0;
-}
-
 .header {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .description {
@@ -341,7 +350,7 @@ p {
 .comment {
   background: #f4f4f4;
   margin: 20px 0;
-  padding: 10px;
+  padding: 20px;
   border-radius: 5px;
 }
 
@@ -359,5 +368,11 @@ p {
 
 .comment-text {
   margin-top: 10px;
+}
+
+.thank-you-text {
+  font-size: 20px;
+  margin: 20px 0;
+  text-align: center;
 }
 </style>

@@ -47,7 +47,8 @@ export default {
 <style scoped>
 .stars-rating {
     cursor: pointer;
-    margin-top: 30px;
+    width: 300px;
+    margin: 30px auto 0 auto;
 }
 
 .fa-star {
@@ -60,5 +61,6 @@ export default {
 
 .thank-you-rating-text {
     margin-top: 30px;
+    font-size: 20px;
 }
 </style>
