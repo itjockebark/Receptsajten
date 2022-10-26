@@ -46,7 +46,7 @@ export default {
 
 <style>
 body {
-  margin: 0;
+  margin: 0 0 100px 0;
   font-family: Arial, Helvetica, sans-serif;
 }
 

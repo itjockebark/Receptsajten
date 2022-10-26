@@ -38,7 +38,8 @@ export default {
         },
         // checks if star should be filled
         showStar(number) {
-            return (this.recipe.avgRating >= number && this.starOnHover >= number) || this.starOnHover >= number;
+            //return (this.recipe.avgRating >= number && this.starOnHover >= number) || this.starOnHover >= number;
+            return this.starOnHover >= number;
         }
     },
 }
@@ -47,8 +48,8 @@ export default {
 <style scoped>
 .stars-rating {
     cursor: pointer;
-    width: 300px;
-    margin: 30px auto 0 auto;
+    width: 180px;
+    margin: 30px auto 5px auto;
 }
 
 .fa-star {
@@ -60,7 +61,7 @@ export default {
 }
 
 .thank-you-rating-text {
-    margin-top: 30px;
+    margin: 30px 0 0 0;
     font-size: 20px;
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
   <LoadingRecipeView v-if="loading" />
   <div class="container" v-if="!loading">
+    <i class="fa-solid fa-square-xmark fa-2xl" @click="$router.push('/')"></i>
     <h1 class="header">{{recipe.title}}</h1>
     <div class="container-2">
       <div class="description-and-img">
@@ -63,7 +64,7 @@
       <div class="comment" v-for="cmt in comments">
         <div class="name-and-date">
           <p class="name">{{cmt.name}}</p>
-          <p class="date">datum</p>
+          <p class="date">{{new Date(cmt.createdAt).toLocaleDateString()}}</p>
         </div>
         <p class="comment-text">{{cmt.comment}}</p>
       </div>
@@ -98,21 +99,23 @@ export default {
   props: [
     'searchRecipes'
   ],
-  async created() {
-    await this.fetchData();
+  created() {
+    this.fetchRecipes();
+    this.fetchComments();
   },
   methods: {
-    async fetchData() {
-      const response = await fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}`);
-      const data = await response.json();
-      this.recipe = data;
-      await this.fetchComments();
-      this.loading = false;
+    fetchRecipes() {
+      fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}`)
+        .then(response => response.json())
+        .then(data => {
+          this.recipe = data;
+          this.loading = false;
+        });
     },
-    async fetchComments() {
-      const response = await fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}/comments`);
-      const data = await response.json();
-      this.comments = data;
+    fetchComments() {
+      fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}/comments`)
+        .then(response => response.json())
+        .then(data => this.comments = data);
     },
     showStar(number) {
       return this.recipe.avgRating >= number;
@@ -131,7 +134,7 @@ export default {
     charsLeft() {
       this.commentWarning = 200 - this.comment.length;
     },
-    async onSubmit() {
+    onSubmit() {
       const toSend = {
         comment: this.comment,
         name: this.name
@@ -144,21 +147,16 @@ export default {
       };
 
       fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}/comments`, requestOptions)
-        .then(response => response)
-        .then(data => data);
-
-      this.commented = true;
-      this.comment = '';
-      this.name = '';
-      this.commentWarning = '200';
+        .then(response => response.json())
+        .then(data => {
+          this.commented = true;
+          this.comment = '';
+          this.name = '';
+          this.commentWarning = '200';
+          this.fetchComments();
+        });
     }
   },
-  async updated() {
-    if (this.commented && this.updateCounter < 20) {
-      await this.fetchComments();
-      this.updateCounter++;
-    }
-  }
 }
 </script>
 
@@ -167,8 +165,9 @@ p {
   margin: 0;
 }
 .container {
-  width: 1000px;
-  margin-bottom: 100px;
+  width: 716px;
+  display: flex;
+  position: relative;
 }
 
 .container-2 {
@@ -177,7 +176,24 @@ p {
 }
 
 .header {
-  margin-bottom: 40px;
+  margin: 50px 0 30px 0;
+  text-align: center;
+}
+
+.fa-square-xmark {
+  cursor: pointer;
+  margin-top: 40px;
+  right: 0;
+  position: absolute;
+  color: #8c0000;
+}
+
+.header-and-x {
+  display: flex;
+  align-items: center;
+  margin: 20px 0 30px 0;
+  width: 716px;
+  justify-content: center;
 }
 
 .description {

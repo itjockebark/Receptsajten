@@ -16,7 +16,7 @@
     },
     data() {
       return {
-        loading: false,
+        loading: true,
         recipes: []
       }
     },
@@ -28,6 +28,7 @@
       this.$watch(
         () => this.$route.params,
         () => {
+          this.loading = true;
           this.fetchData();
         },
         { immediate: true }
