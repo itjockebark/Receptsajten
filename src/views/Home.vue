@@ -13,7 +13,7 @@
     name: 'Home',
     data() {
       return {
-        loading: false,
+        loading: true,
         recipes: []
       }
     },
@@ -25,9 +25,8 @@
         this.recipes = searchResult.sort((a, b) => b.avgRating - a.avgRating);
       }
     },
-    async created() {
-      this.loading = true;
-      this.recipes = await this.fetchRecipes();
+    created() {
+      this.fetchRecipes();
     },
     components: {
       LoadingRecipes,
@@ -43,14 +42,15 @@
 
       fetch(`${baseUrl}/recipes/${id}/ratings`, requestOptions)
         .then(response => response)
-        .then(data => data);
-        this.recipes = await this.fetchRecipes();
+        .then(data => this.fetchRecipes());
       },
-      async fetchRecipes() {
-        const response = await fetch(`${baseUrl}/recipes`);
-        const data = await response.json();
-        this.loading = false;
-        return data.sort((a, b) => b.avgRating - a.avgRating);
+      fetchRecipes() {
+        fetch(`${baseUrl}/recipes`)
+          .then(response => response.json())
+          .then(data => {
+            this.recipes = data.sort((a, b) => b.avgRating - a.avgRating);
+            this.loading = false;
+          });
       }
     }
   }

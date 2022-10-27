@@ -24,7 +24,6 @@
       'searchRecipes'
     ],
     created() {
-      this.loading = true;
       this.$watch(
         () => this.$route.params,
         () => {
@@ -35,11 +34,13 @@
       )
     },
     methods: {
-      async fetchData() {
-        const response = await fetch(`${baseUrl}/categories/${this.$route.params.name}/recipes`);
-        const data = await response.json();
-        this.loading = false;
-        this.recipes = data.sort((a, b) => b.avgRating - a.avgRating);
+      fetchData() {
+        fetch(`${baseUrl}/categories/${this.$route.params.name}/recipes`)
+          .then(response => response.json())
+          .then(data => {
+            this.recipes = data.sort((a, b) => b.avgRating - a.avgRating);
+            this.loading = false;
+          });
       }
     }
   }

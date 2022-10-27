@@ -5,13 +5,7 @@
             <div class="title-and-description">
                 <div class="title">
                     <h3>{{ recipe.title }}</h3>
-                    <div class="stars">
-                        <i :class="[showStar(1) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
-                        <i :class="[showStar(1.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
-                        <i :class="[showStar(2.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
-                        <i :class="[showStar(3.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
-                        <i :class="[showStar(4.5) ? 'fa-solid' : 'fa-regular', 'fa-star']"></i>
-                    </div>
+                    <Stars :avgRating="recipe.avgRating" />
                 </div>
                 <p class="description">{{ recipe.description }}</p>
             </div>
@@ -22,15 +16,17 @@
 </template>
 
 <script>
+import Stars from './Stars.vue';
+
 export default {
     name: 'Recipe',
+    components: {
+        Stars
+    },
     props: {
         recipe: Object
     },
     methods: {
-        starClick(id, number) {
-            this.$emit('star-click', id, number);
-        },
         recipeClick(id) {
             this.$router.push(`/recipe/${id}`);
         },
