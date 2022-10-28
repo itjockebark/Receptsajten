@@ -1,6 +1,6 @@
 <template>
     <header>
-        <h1>{{ title }}</h1>
+        <h1 class="font-effect-neon">{{ title }}</h1>
     </header>
 </template>
 
@@ -16,6 +16,10 @@
 <style scoped>
     header {
         text-align: center;
+    }
+
+    h1 {
+        font-size: 60px;
     }
     
     p {

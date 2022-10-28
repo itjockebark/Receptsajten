@@ -5,7 +5,7 @@
             <div class="title-and-description">
                 <div class="title">
                     <h3>{{ recipe.title }}</h3>
-                    <Stars :avgRating="recipe.avgRating" />
+                    <Stars class="stars" :avgRating="recipe.avgRating" />
                 </div>
                 <p class="description">{{ recipe.description }}</p>
             </div>
@@ -66,6 +66,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    text-transform: capitalize;
+    font-size: large;
+}
+
+.stars {
+    position: auto;
 }
 
 .title h3 {
@@ -77,8 +83,8 @@ export default {
     border: 2px solid #ddd;
     border-style: outset;
     padding: 6px;
-    width: 150px;
-    height: 150px;
+    max-width: 150px;
+    max-height: 150px;
     margin-right: 25px;
     object-fit: cover;
     aspect-ratio: 1;
@@ -95,5 +101,46 @@ export default {
 
 .fa-star {
     color: #fca003;
+}
+
+@media screen and (max-width: 992px) {
+    .recipe {
+        width: 500px;
+    }
+
+    .stars {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+    }
+
+    .recipe {
+        position: relative;
+    }
+
+    .recipe-img {
+        width: 125px;
+        height: 125px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .recipe {
+        width: 350px;
+        text-align: center;
+    }
+
+    .recipe-img {
+        display: none;
+    }
+
+    .title {
+        display: block;
+    }
+
+    .stars {
+        position: static;
+        margin-top: 10px;
+    }
 }
 </style>

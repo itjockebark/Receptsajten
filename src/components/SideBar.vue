@@ -19,21 +19,20 @@
                 numOfRecipes: 0
             }
         },
-        async created() {
-            this.categories = await this.fetchCategories();
-            this.numOfRecipes = await this.getRecipeCount();
+        created() {
+            this.fetchCategories();
+            this.getRecipeCount();
         },
         methods: {
-            async fetchCategories() {
-                const response = await fetch(`${baseUrl}/categories`);
-                const data = await response.json();
-                return data;
+            fetchCategories() {
+                fetch(`${baseUrl}/categories`)
+                    .then(response => response.json())
+                    .then(data => this.categories = data);
             },
-            async getRecipeCount() {
-                const response = await fetch(`${baseUrl}/recipes`);
-                const data = await response.json();
-
-                return data.length;
+            getRecipeCount() {
+                fetch(`${baseUrl}/recipes`)
+                    .then(response => response.json())
+                    .then(data => this.numOfRecipes = data.length);
             }
         }
     }

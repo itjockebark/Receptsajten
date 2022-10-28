@@ -2,19 +2,19 @@
   <LoadingRecipeView v-if="loading" />
   <div class="container" v-if="!loading">
     <i class="fa-solid fa-square-xmark fa-2xl" @click="$router.push('/')"></i>
-    <h1 class="header">{{recipe.title}}</h1>
+    <h1 class="header font-effect-fire-animation">{{recipe.title}}</h1>
     <div class="container-2">
       <div class="description-and-img">
+        <img class="recipe-img" :src="recipe.imageUrl" :alt="recipe.title">
         <div class="description">
           <RecipeDescription :recipe="recipe" />
         </div>
-        <img class="recipe-img" :src="recipe.imageUrl" :alt="recipe.title">
       </div>
       <div class="ingredients-and-instructions">
         <div class="ingredients">
           <Ingredients :ingredients="recipe.ingredients" />
         </div>
-        <div>
+        <div class="instructions">
           <Instructions :instructions="recipe.instructions" />
         </div>
       </div>
@@ -105,6 +105,7 @@ export default {
 .header {
   margin: 50px 0 30px 0;
   text-align: center;
+  font-size: 60px;
 }
 
 .fa-square-xmark {
@@ -115,7 +116,7 @@ export default {
   color: #8c0000;
 }
 .description {
-  width: 400px;
+  width: 100%;
   text-align: center;
   margin-right: 50px;
   font-size: 20px;
@@ -129,14 +130,16 @@ export default {
   border: 2px solid #ddd;
   border-style: outset;
   padding: 6px;
-  width: 250px;
-  height: 250px;
+  max-width: 37%;
+  max-height: 37%;
   object-fit: cover;
+  box-sizing: border-box;
   aspect-ratio: 1;
 }
 
 .description-and-img {
   display: flex;
+  flex-direction: row-reverse;
 }
 
 .ingredients-and-instructions {
@@ -147,8 +150,12 @@ export default {
 }
 
 .ingredients {
-  margin-right: 20px;
-  width: 200px;
+  width: 50%;
+  margin-right: 10px;
+}
+
+.instructions {
+  width: 100%;
 }
 
 .rating {
@@ -160,6 +167,20 @@ export default {
 }
 
 .comment-container {
-  width: 716px;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .description-and-img {
+    flex-direction: column;
+  }
+
+  .recipe-img {
+    margin: auto;
+  }
+
+  .container {
+    width: 500px;
+  }
 }
 </style>

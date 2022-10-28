@@ -20,7 +20,6 @@ export default {
   background-color: #f4f4f4;
   margin: 5px 0;
   padding: 10px;
-  width: 475px;
   border-radius: 5px;
 }
 </style>

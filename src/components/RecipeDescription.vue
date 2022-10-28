@@ -51,4 +51,10 @@ export default {
 .recipe-minutes-text {
   margin-right: 15px;
 }
+
+@media screen and (max-width: 768px) {
+  .recipe-info {
+    margin: 0;
+  }
+}
 </style>

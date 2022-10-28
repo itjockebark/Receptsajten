@@ -32,7 +32,7 @@ export default {
         'star-click'
     ],
     methods: {
-        async starClick(number) {
+        starClick(number) {
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

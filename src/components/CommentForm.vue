@@ -1,6 +1,6 @@
 <template>
-  <p v-if="!commented">Tecken kvar: {{ commentWarning }}</p>
   <form @submit.prevent="onSubmit" v-if="!commented">
+    <p v-if="!commented">Tecken kvar: {{ commentWarning }}</p>
     <div class="comment-field">
       <textarea class="comment-field-textarea" type="text" placeholder="Skriv din kommentar" required v-model="comment"
         @input="charsLeft" :maxlength="commentLimit" :disabled="commented"></textarea>
@@ -84,6 +84,7 @@ export default {
   resize: none;
   border: none;
   outline: none;
+  font-family: Poppins, monospace;
 }
 
 .name-input-and-button {
@@ -106,6 +107,7 @@ export default {
   outline: none;
   height: 20px;
   font-size: 18px;
+  font-family: Poppins, monospace;
 }
 
 .name-input-button {
@@ -118,6 +120,7 @@ export default {
   margin-left: 10px;
   color: #555;
   cursor: pointer;
+  font-family: Poppins, monospace;
 }
 
 .name-input-button:hover {

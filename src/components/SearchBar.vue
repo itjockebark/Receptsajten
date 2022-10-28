@@ -15,11 +15,10 @@
             }
         },
         methods: {
-            async filterRecipes() {
-                const response = await fetch(`${baseUrl}/recipes?query=${this.input}`);
-                const data = await response.json();
-                this.$emit('searched-recipes', data);
-                return data;
+            filterRecipes() {
+                fetch(`${baseUrl}/recipes?query=${this.input}`)
+                    .then(response => response.json())
+                    .then(data => this.$emit('searched-recipes', data));
             }
         },
         watch: { 
