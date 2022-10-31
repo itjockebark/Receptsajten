@@ -1,7 +1,7 @@
 <template>
     <div class="search">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input class="search-bar" type="text" :placeholder="`Sök bland ${$route.path === '/' ? 'alla recept' : $route.params.name.toLowerCase()}...`" v-model="input"
+        <input class="search-bar" type="text" :placeholder="`Sök bland ${$route.path === '/' ? 'alla recept' : $route.params.name === undefined ? '' : $route.params.name.toLowerCase()}...`" v-model="input"
             @input="filterRecipes">
     </div>
 </template>
