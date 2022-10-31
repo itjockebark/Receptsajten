@@ -100,13 +100,12 @@ p {
 .recipe-info-text {
   display: flex;
   align-items: center;
-
 }
 
 .recipe-img {
   padding: 6px;
-  width: 175px;
-  height: 175px;
+  width: 250px;
+  height: 250px;
   background: #f4f4f4;
 }
 
