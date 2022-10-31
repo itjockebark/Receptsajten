@@ -1,37 +1,39 @@
 <template>
     <div class="search">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input class="search-bar" type="text" placeholder="Sök bland recepten..." v-model="input" @click="$router.push('/');" @input="filterRecipes">
+        <input class="search-bar" type="text" :placeholder="`Sök bland ${$route.path === '/' ? 'alla recept' : $route.params.name.toLowerCase()}...`" v-model="input"
+            @input="filterRecipes">
     </div>
 </template>
 
 <script>
-    const baseUrl = 'https://jau21-grupp3-z5h3yg8ogjvb.sprinto.se';
-    export default {
-        name: 'SearchBar',
-        data() {
-            return {
-                input: ''
-            }
-        },
-        methods: {
-            filterRecipes() {
-                fetch(`${baseUrl}/recipes?query=${this.input}`)
-                    .then(response => response.json())
-                    .then(data => this.$emit('searched-recipes', data));
-            }
-        },
-        watch: { 
-            '$route.path': function() {
-                if (this.$route.path !== '/') {
-                    this.input = '';
-                }
-            }
-        },
-        emits: [
-            'searched-recipes'
-        ]
-    }
+const baseUrl = 'https://jau21-grupp3-z5h3yg8ogjvb.sprinto.se';
+export default {
+    name: 'SearchBar',
+    data() {
+        return {
+            input: '',
+
+        }
+    },
+    methods: {
+        filterRecipes() {
+            let url = this.$route.path === '/' ? `${baseUrl}/recipes?query=${this.input}` : `${baseUrl}/categories/${this.$route.params.name}/recipes?query=${this.input}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => this.$emit('searched-recipes', data));
+        }
+    },
+    watch: {
+        '$route.path': function () {
+            this.input = '';
+        }
+    },
+    emits: [
+        'searched-recipes'
+    ]
+}
 </script>
 
 <style scoped>
@@ -58,5 +60,17 @@
     margin-right: 5px;
     position: relative;
     top: 1px;
+}
+
+@media screen and (max-width: 992px) {
+    .search {
+        width: 500px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .search {
+        width: 350px;
+    }
 }
 </style>

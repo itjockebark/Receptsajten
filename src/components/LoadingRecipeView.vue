@@ -2,11 +2,11 @@
   <div class="container">
     <div class="header"></div>
     <div class="description-and-img">
+      <div class="recipe-img"></div>
       <div class="description">
         <div class="replace-description"></div>
         <div class="recipe-info"></div>
       </div>
-      <div class="recipe-img"></div>
     </div>
     <div class="ingredients-and-instructions">
       <div class="ingredients">
@@ -105,13 +105,14 @@ p {
 
 .recipe-img {
   padding: 6px;
-  width: 250px;
-  height: 250px;
+  width: 175px;
+  height: 175px;
   background: #f4f4f4;
 }
 
 .description-and-img {
   display: flex;
+  flex-direction: row-reverse;
 }
 
 .ingredients-and-instructions {
@@ -167,5 +168,27 @@ p {
   height: 20px;
   background: #f4f4f4;
   margin: 20px 0;
+}
+
+@media screen and (max-width: 768px) {
+  .description-and-img {
+    flex-direction: column;
+  }
+
+  .description {
+    margin: 0;
+  }
+
+  .recipe-img {
+    margin: 0 auto 30px auto;
+  }
+
+  .container {
+    width: 500px;
+  }
+
+  .instructions-list {
+    width: 250px;
+  }
 }
 </style>

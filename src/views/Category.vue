@@ -1,6 +1,6 @@
 <template>
   <LoadingRecipes v-if="loading" />
-  <Recipes :recipes=recipes />
+  <Recipes v-if="!loading" :recipes=recipes />
 </template>
 
 <script>
@@ -23,6 +23,11 @@
     props: [
       'searchRecipes'
     ],
+    watch: {
+      searchRecipes: function(searchResult) {
+        this.recipes = searchResult.sort((a, b) => b.avgRating - a.avgRating);
+      }
+    },
     created() {
       this.$watch(
         () => this.$route.params,

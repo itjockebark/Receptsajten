@@ -4,6 +4,7 @@
         <ul class="categories-list">
             <li><router-link to="/">Alla recept ({{numOfRecipes}})</router-link></li>
             <li v-for="category in categories" :key="category.name" :title="category.name"><router-link :to="{ name: 'Category', params: { name: category.name } }" >{{ category.name }} ({{ category.count }})</router-link></li>
+            <!-- <li v-for="category in categories" :key="category.name" :title="category.name" @click="router.push(`/category/${category.name}`)">{{ category.name }} ({{ category.count }})</li> -->
         </ul>
     </div>
 </template>
