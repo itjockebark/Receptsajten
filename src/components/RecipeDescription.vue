@@ -23,6 +23,9 @@ export default {
 }
 </script>
 <style scoped>
+p {
+  margin: 0;
+}
 .recipe-info {
   display: flex;
   height: 35px;
@@ -53,6 +56,9 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
+  p {
+    margin: 20px 0;
+  }
   .recipe-info {
     margin: 0;
   }
