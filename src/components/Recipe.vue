@@ -83,8 +83,8 @@ export default {
     border: 2px solid #ddd;
     border-style: outset;
     padding: 6px;
-    max-width: 150px;
-    max-height: 150px;
+    width: 150px;
+    height: 150px;
     margin-right: 25px;
     object-fit: cover;
     aspect-ratio: 1;
