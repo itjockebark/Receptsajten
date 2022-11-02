@@ -1,7 +1,7 @@
 <template>
   <LoadingRecipeView v-if="loading" />
   <div class="container" v-if="!loading">
-    <i class="fa-solid fa-square-xmark fa-2xl" @click="$router.push('/')"></i>
+    <i class="fa-solid fa-chevron-left fa-2xl" @click="$router.back()"></i>
     <h1 class="header font-effect-fire-animation">{{recipe.title}}</h1>
     <div class="container-2">
       <div class="description-and-img">
@@ -108,12 +108,12 @@ export default {
   font-size: 60px;
 }
 
-.fa-square-xmark {
+.fa-chevron-left {
   cursor: pointer;
-  margin-top: 40px;
-  right: 0;
+  margin-top: 30px;
+  left: 0;
   position: absolute;
-  color: #8c0000;
+  color: #aaa
 }
 .description {
   width: 100%;

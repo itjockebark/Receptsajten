@@ -64,14 +64,9 @@ export default {
 
 .title {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     text-transform: capitalize;
     font-size: large;
-}
-
-.stars {
-    position: auto;
 }
 
 .title h3 {
