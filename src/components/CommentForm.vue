@@ -59,7 +59,7 @@ export default {
         });
     },
     charsLeft() {
-      this.commentWarning = this.commentLimit - this.comment.length;
+      this.commentWarning = (this.commentLimit - this.comment.length).toString();
     }
   }
 }
