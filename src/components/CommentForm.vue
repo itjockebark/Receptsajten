@@ -54,7 +54,7 @@ export default {
           this.commented = true;
           this.comment = '';
           this.name = '';
-          this.commentWarning = '200';
+          this.commentWarning = this.commentWarning.toString();
           this.$emit('commentSubmit');
         });
     },
