@@ -37,26 +37,28 @@ export default {
   ],
   methods: {
     onSubmit() {
-      const toSend = {
-        comment: this.comment,
-        name: this.name
-      };
+      if (this.comment && this.name) {
+        const toSend = {
+          comment: this.comment,
+          name: this.name
+        };
 
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(toSend)
-      };
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(toSend)
+        };
 
-      fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}/comments`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-          this.commented = true;
-          this.comment = '';
-          this.name = '';
-          this.commentWarning = this.commentLimit.toString();
-          this.$emit('commentSubmit');
-        });
+        fetch(`${baseUrl}/recipes/${this.$route.params.recipeId}/comments`, requestOptions)
+          .then(response => response.json())
+          .then(data => {
+            this.commented = true;
+            this.comment = '';
+            this.name = '';
+            this.commentWarning = this.commentLimit.toString();
+            this.$emit('commentSubmit');
+          });
+      }
     },
     charsLeft() {
       this.commentWarning = (this.commentLimit - this.comment.length).toString();
